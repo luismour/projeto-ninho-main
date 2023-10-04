@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 
 const app = express();
 
+app.use(express.static("public"));
+
 mongoose.set("strictQuery", false); // Desativa o modo estrito (deprecated em Mongoose 7)
 
 //Config JSON response
@@ -16,7 +18,15 @@ const User = require("./models/User");
 
 //Public Route
 app.get("/", (req, res) => {
-  res.status(200).json({ msg: "Bem vindo ao nosso site!" });
+  res.sendFile(__dirname + "/src/index.html");
+});
+
+app.get("/login", (req, res) => {
+  res.sendFile(__dirname + "/src/login.html");
+});
+
+app.get("/register", (req, res) => {
+  res.sendFile(__dirname + "/src/registro.html");
 });
 
 //Private Rote
@@ -53,8 +63,9 @@ function checkToken(req, res, next) {
 
 //Register User
 app.post("/auth/register", async (req, res) => {
-  const { name, email, password, confirmpassword } = req.body;
-
+  console.log("Dados recebidos no servidor:", req.body);
+  const { name, email, password, confirmPassword } = req.body;
+  console.log("Email recebido:", email);
   //validations
   if (!name) {
     return res.status(422).json({ msg: "O nome é obrigátorio!" });
@@ -65,8 +76,10 @@ app.post("/auth/register", async (req, res) => {
   if (!password) {
     return res.status(422).json({ msg: "A senha é obrigátorio!" });
   }
-  if (password !== confirmpassword) {
-    return res.status(422).json({ msg: "As senhas não conferem" });
+  if (password !== confirmPassword) {
+    return res
+      .status(422)
+      .json({ msg: "As senhas não conferem", password, confirmPassword });
   }
 
   //check if user exist
@@ -89,7 +102,7 @@ app.post("/auth/register", async (req, res) => {
 
   try {
     await user.save();
-    res.status(201).json({ msg: "Usuário criado com sucesso" });
+    res.status(201).json({ success: true, msg: "Usuário criado com sucesso" });
   } catch (error) {
     res.status(500).json({ msg: "Aconteceu um erro no servidor" });
   }
@@ -129,7 +142,9 @@ app.post("/auth/login", async (req, res) => {
       },
       secret
     );
-    res.status(200).json({ msg: "Autenticação feita com sucesso", token });
+    res
+      .status(200)
+      .json({ success: true, msg: "Autenticação feita com sucesso", token });
   } catch (err) {
     res.status(500).json({ msg: "Aconteceu um erro no servidor" });
   }

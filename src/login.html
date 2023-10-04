@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>login</title>
+    <link rel="stylesheet" href="/css/login.css" />
+  </head>
+
+  <body>
+    <div class="page">
+      <form method="post" class="formLogin" id="loginForm" action="/auth/login">
+        <h1>Bem Vindo!</h1>
+        <p>Digite seus dados de acesso no campo abaixo</p>
+        <label for="email">Email</label>
+        <input
+          type="email"
+          placeholder="Digite seu Email"
+          id="email"
+          autofocus="true"
+        />
+        <label for="password">Senha</label>
+        <input
+          type="password"
+          placeholder="Digite seu Senha"
+          id="password"
+          required
+        />
+        <a href="/">Esqueci minha senha</a>
+        <input type="submit" value="Acessar" class="btn" />
+      </form>
+    </div>
+
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          const data = {
+            email: email,
+            password: password,
+          };
+
+          fetch("/auth/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+
+              // Verifica se o login foi bem-sucedido (por exemplo, se o backend retorna uma chave 'success')
+              if (data.success) {
+                // Redireciona o usuário para a rota inicial
+                window.location.href = "/";
+              } else {
+                // Se houver um erro no login, você pode mostrar uma mensagem de erro ao usuário
+                console.error("Erro no login:", data.msg);
+                // Ou mostrar uma mensagem de erro na página, por exemplo:
+                // document.getElementById('errorMessage').innerText = 'Credenciais inválidas. Tente novamente.';
+              }
+            })
+            .catch((error) => {
+              console.error("Erro:", error);
+              // Lidar com outros tipos de erros, se houver
+            });
+        });
+    </script>
+  </body>
+</html>

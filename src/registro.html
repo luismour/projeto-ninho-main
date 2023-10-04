@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
+    />
+    <link rel="stylesheet" href="/css/registro.css" />
+  </head>
+
+  <body>
+    <div class="page">
+      <form
+        method="post"
+        class="formRegistro"
+        id="registroForm"
+        action="/auth/register"
+      >
+        <h1>Crie sua Conta</h1>
+        <p style="margin: 0">
+          Já tem uma conta? <a href="http://localhost:8080/login">Login</a>
+        </p>
+        <label for="name">Nome</label>
+        <input
+          type="text"
+          placeholder="Digite seu Nome"
+          id="name"
+          autofocus="true"
+          required
+        />
+        <label for="email">Email</label>
+        <input
+          type="email"
+          placeholder="Digite seu Email"
+          id="email"
+          required
+        />
+        <label for="password">Senha</label>
+        <input
+          type="password"
+          placeholder="Digite sua Senha"
+          id="password"
+          required
+        />
+        <label for="confirmPassword">Confirmar Senha</label>
+        <input
+          type="password"
+          placeholder="Confirme sua Senha"
+          id="confirmPassword"
+          required
+        />
+        <input type="submit" value="Registrar" class="btn" />
+      </form>
+    </div>
+
+    <script>
+      document
+        .getElementById("registroForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Evitar que o formulário seja enviado tradicionalmente
+
+          const name = document.getElementById("name").value;
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          const confirmPassword =
+            document.getElementById("confirmPassword").value;
+
+          // Enviar os dados do formulário para o backend
+          fetch("/auth/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: name,
+              email: email,
+              password: password,
+              confirmPassword: confirmPassword,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Registro bem-sucedido, redirecione ou faça qualquer ação necessária
+                window.location.href = "/login"; // Redirecionar para a página de login
+              } else {
+                // Exibir mensagem de erro ao usuário
+                alert(data.msg);
+              }
+            })
+            .catch((error) => {
+              console.error("Erro ao registrar:", error);
+            });
+        });
+    </script>
+  </body>
+</html>
