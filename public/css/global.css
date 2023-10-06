@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+:root {
+  /* fonts */
+  --font-paytone-one: "Paytone One";
+
+  /* font sizes */
+  --font-size-xl: 20px;
+
+  /* Colors */
+  --color-slategray-100: #846787;
+  --color-slategray-200: rgba(132, 103, 135, 0.23);
+  --color-white: #fff;
+
+  /* Border radiuses */
+  --br-6xl: 25px;
+}

@@ -1,0 +1,35 @@
+body {
+  background-color: #add9cc;
+  margin: 0;
+}
+
+header {
+  background-color: #fff;
+  margin: 0;
+  padding: 15px;
+}
+
+header h1 {
+  color: purple;
+  margin-left: 5%;
+}
+
+.form-conteudo {
+  background-color: #8467873b;
+  padding: 60px;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.coluna {
+  width: 70%; /* Define a largura das colunas */
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container::after {
+  content: "";
+  display: table;
+  clear: both;
+}

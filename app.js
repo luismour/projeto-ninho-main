@@ -29,6 +29,10 @@ app.get("/register", (req, res) => {
   res.sendFile(__dirname + "/src/registro.html");
 });
 
+app.get("/form", (req, res) => {
+  res.sendFile(__dirname + "/src/form.html");
+});
+
 //Private Rote
 app.get("/user/:id", checkToken, async (req, res) => {
   const id = req.params.id;
